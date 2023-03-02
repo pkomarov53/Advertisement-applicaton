@@ -2,16 +2,24 @@ package app
 
 import java.io.File
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class AdvertApplication {
 
     private val ads = mutableListOf<Advert>()
     private val users = mutableListOf<User>()
 
+    // Переменная хранящая текущую дату и время в виде строки
+    private val curDate = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss").format(
+        LocalDateTime.parse(
+            LocalDateTime.now().format(
+                DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss")),
+                    DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss")))
+
     fun loadUsersFromFile() {
-        val file = File("C:\\Users\\USER-HOME\\Documents\\GitHub\\Advert\\src\\main\\kotlin\\users.txt")
+        val file = File("C:\\Users\\USER-HOME\\Documents\\GitHub\\kkmt-kotlin-advert\\src\\main\\kotlin\\info_\\users.txt")
         if (!file.exists()) {
-            throw IllegalArgumentException("Файл не существует")
+            throw IllegalArgumentException("Файл не существует\n")
         }
 
         file.forEachLine { line ->
@@ -26,9 +34,9 @@ class AdvertApplication {
     }
 
     fun loadAdsFromFile() {
-        val file = File("C:\\Users\\USER-HOME\\Documents\\GitHub\\Advert\\src\\main\\kotlin\\adverts.txt")
+        val file = File("C:\\Users\\USER-HOME\\Documents\\GitHub\\kkmt-kotlin-advert\\src\\main\\kotlin\\info_\\adverts.txt")
         if (!file.exists()) {
-            throw IllegalArgumentException("Файл не существует")
+            throw IllegalArgumentException("Файл не существует\n")
         }
 
         file.forEachLine { line ->
@@ -38,9 +46,7 @@ class AdvertApplication {
             val userId = fields[2].toInt()
             val description = fields[3]
             val price = fields[4].toDouble()
-            val publicationDate = LocalDateTime.now()
-
-            val ad = Advert(id, title, userId, description, price, publicationDate)
+            val ad = Advert(id, title, userId, description, price, curDate)
             ads.add(ad)
         }
     }
@@ -54,14 +60,22 @@ class AdvertApplication {
         val user = users.find { it.login == login && it.password == password }
         if (user != null) {
             currentUser = user
+            println("Вход успешно выполнен\n")
             return true
         }
+        println("Ошибка в логине и/или пароле\n")
         return false
     }
 
     // выход из приложения
     fun logout() {
-        currentUser = null
+        if (currentUser == null) {
+            println("Вы не авторизовались\n")
+            return
+        } else {
+            println("Вы успешно вышли из аккаунта\n")
+            currentUser = null
+        }
     }
 
     // просмотр всех объявлений
@@ -85,36 +99,36 @@ class AdvertApplication {
             userId = currentUser!!.id,
             description = description,
             price = price,
-            publishDate = LocalDateTime.now(),
+            publishDate = curDate,
             status = Advert.AdStatus.OPEN
         )
         ads.add(ad)
-        println("Объявление успешно размещено")
+        println("Объявление успешно размещено\n")
     }
 
     // покупка товара из объявления
     fun buyAd(adId: Int) {
         if (currentUser == null) {
-            println("Необходимо авторизоваться в приложении для покупки товара")
+            println("Необходимо авторизоваться в приложении для покупки товара\n")
             return
         }
         val ad = ads.find { it.id == adId && it.status == Advert.AdStatus.OPEN }
         if (ad == null) {
-            println("Объявление не найдено или уже закрыто")
+            println("Объявление не найдено или уже закрыто\n")
             return
         }
         val seller = users.find { it.id == ad.userId }
         if (seller == null) {
-            println("Произошла ошибка при покупке товара. Попробуйте еще раз")
+            println("Произошла ошибка при покупке товара. Попробуйте еще раз\n")
             return
         }
         if (currentUser!!.balance < ad.price) {
-            println("У вас недостаточно средств для покупки этого товара")
+            println("У вас недостаточно средств для покупки этого товара\n")
             return
         }
         currentUser!!.balance -= ad.price
         seller.balance += ad.price
         ad.status = Advert.AdStatus.CLOSED
-        println("Покупка товара успешно завершена")
+        println("Покупка товара успешно завершена\n")
     }
 }
