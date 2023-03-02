@@ -27,7 +27,8 @@ fun main() {
             }
 
             "add" -> {
-                app.placeAd("Hello", "Hello", 340.55)
+                println("Введите название, описание и цену товара в объявлении")
+                app.placeAd(readln(), readln(), readln().toDouble())
             }
 
             "buy" -> {
