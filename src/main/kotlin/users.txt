@@ -1,0 +1,3 @@
+1,ivanov,password1,100.0
+2,petrov,password2,50.0
+3,norovirus,password3,0.0
