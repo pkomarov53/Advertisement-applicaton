@@ -6,16 +6,18 @@ import java.time.format.DateTimeFormatter
 
 class AdvertApplication {
 
+    // списки хранящие данные объявлений и пользователей
     private val ads = mutableListOf<Advert>()
     private val users = mutableListOf<User>()
 
-    // Переменная хранящая текущую дату и время в виде строки
+    // переменная хранящая текущую дату и время в виде строки
     private val curDate = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss").format(
         LocalDateTime.parse(
             LocalDateTime.now().format(
                 DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss")),
                     DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss")))
 
+    // подгружаем пользователей из файла
     fun loadUsersFromFile() {
         val file = File("files/users.txt")
         if (!file.exists()) {
@@ -33,6 +35,7 @@ class AdvertApplication {
         }
     }
 
+    // подгружаем объявления из файла
     fun loadAdsFromFile() {
         val file = File("files/adverts.txt")
         if (!file.exists()) {
@@ -52,16 +55,14 @@ class AdvertApplication {
         }
     }
 
+    // загружаем пользователей в файл
     fun loadAdsToFile() {
         val file = File("files/adverts.txt")
         file.writeText("")
 
-        ads.forEach {
+        users.forEach {
             file.appendText(
-                "${it.id},${it.title}," +
-                        "${it.userId},${it.description}," +
-                        "${it.price},${it.publishDate}," +
-                        "${it.status}\n"
+                "${it.id},${it.login},${it.password},${it.balance}"
             )
         }
     }

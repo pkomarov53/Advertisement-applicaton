@@ -3,8 +3,8 @@ import app.AdvertApplication
 fun main() {
     val app = AdvertApplication()
 
-    app.loadUsersFromFile() // Подгружаем пользователей из файла
-    app.loadAdsFromFile() // Подгружаем объявления из файла
+    app.loadUsersFromFile()
+    app.loadAdsFromFile()
 
     println("Меню программы:\n" +
             "\tlogin - Войти в приложение\n" +
@@ -18,7 +18,7 @@ fun main() {
         print("Введите действие -> ")
         when (readln().lowercase()) {
             "login" -> {
-                println("Введите логин и пароль")
+                println("Введите логин и пароль:")
                 app.login(readln(), readln())
             }
 
@@ -38,16 +38,17 @@ fun main() {
 
             "logout" -> {
                 app.logout()
-                app.loadAdsToFile()
             }
 
             "exit" -> {
                 print("Программа завершила свою работу...")
-                app.loadAdsToFile()
                 break
             }
 
-            else -> println("[Неизвестный ввод]\n")
+            else -> {
+                println("[Неизвестный ввод]\n")
+            }
         }
     }
+    app.loadAdsToFile()
 }
