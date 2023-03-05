@@ -1,5 +1,5 @@
 # Advertisement applicaton
- Simple console advertisement managment application written on Kotlin
+ Simple console advertisement management application written on Kotlin
 
 Задание: разработать приложение для поиска и размещения объявлений о товарах.
 

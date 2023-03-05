@@ -38,14 +38,16 @@ fun main() {
 
             "logout" -> {
                 app.logout()
+                app.loadAdsToFile()
             }
 
             "exit" -> {
-                print("Программа завершила свою работу, нажмите любую клавишу...")
+                print("Программа завершила свою работу...")
+                app.loadAdsToFile()
                 break
             }
 
-            else -> "Неизвестный ввод"
+            else -> println("[Неизвестный ввод]\n")
         }
     }
 }

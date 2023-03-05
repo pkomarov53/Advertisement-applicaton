@@ -17,7 +17,7 @@ class AdvertApplication {
                     DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss")))
 
     fun loadUsersFromFile() {
-        val file = File("C:\\Users\\USER-HOME\\Documents\\GitHub\\kkmt-kotlin-advert\\src\\main\\kotlin\\info_\\users.txt")
+        val file = File("files/users.txt")
         if (!file.exists()) {
             throw IllegalArgumentException("Файл не существует\n")
         }
@@ -34,7 +34,7 @@ class AdvertApplication {
     }
 
     fun loadAdsFromFile() {
-        val file = File("C:\\Users\\USER-HOME\\Documents\\GitHub\\kkmt-kotlin-advert\\src\\main\\kotlin\\info_\\adverts.txt")
+        val file = File("files/adverts.txt")
         if (!file.exists()) {
             throw IllegalArgumentException("Файл не существует\n")
         }
@@ -46,8 +46,23 @@ class AdvertApplication {
             val userId = fields[2].toInt()
             val description = fields[3]
             val price = fields[4].toDouble()
-            val ad = Advert(id, title, userId, description, price, curDate)
+            val date = fields[5]
+            val ad = Advert(id, title, userId, description, price, date)
             ads.add(ad)
+        }
+    }
+
+    fun loadAdsToFile() {
+        val file = File("files/adverts.txt")
+        file.writeText("")
+
+        ads.forEach {
+            file.appendText(
+                "${it.id},${it.title}," +
+                        "${it.userId},${it.description}," +
+                        "${it.price},${it.publishDate}," +
+                        "${it.status}\n"
+            )
         }
     }
 
@@ -63,7 +78,7 @@ class AdvertApplication {
             println("Вход успешно выполнен\n")
             return true
         }
-        println("Ошибка в логине и/или пароле\n")
+        println("Ошибка в логине или пароле\n")
         return false
     }
 
